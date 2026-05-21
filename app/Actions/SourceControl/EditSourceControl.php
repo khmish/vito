@@ -28,8 +28,12 @@ class EditSourceControl
         ])->validate();
 
         $sourceControl->profile = $input['name'];
-        $sourceControl->url = isset($input['url']) && $input['url'] ? $input['url'] : null;
-        $sourceControl->port = isset($input['port']) && $input['port'] ? (int) $input['port'] : null;
+        if (array_key_exists('url', $input)) {
+            $sourceControl->url = $input['url'] ?: null;
+        }
+        if (array_key_exists('port', $input)) {
+            $sourceControl->port = $input['port'] ? (int) $input['port'] : null;
+        }
         $sourceControl->project_id = isset($input['global']) && $input['global'] ? null : $sourceControl->user->currentProject?->id;
 
         $sourceControl->save();
